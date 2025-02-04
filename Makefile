@@ -2,7 +2,7 @@
 
 # Compiler
 COBC = cobc
-CFLAGS = -x  # Create executable
+CFLAGS = -x -O2 -fbinary-byteorder=native -std=mf # Create executable
 
 # Directories
 SRC_DIR = .
