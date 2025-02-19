@@ -4,6 +4,7 @@
        configuration section.
        repository.
            function explore-operators.
+           
        
        input-output section.
        file-control.
@@ -36,7 +37,6 @@
        
        01 num-char pic 9.
        01 prev-char pic X.
-
        
        procedure division.
 
@@ -67,9 +67,7 @@
                            move ' ' to prev-char
                        else
                            move input-char(c) to num-char
-                           compute goal = 10 * goal + 
-                           num-char
-      *                     function numval(num-char)
+                           compute goal = 10 * goal + num-char
                        end-if
                    when parsing-operands
                        if input-char(c) not equals ' '
@@ -79,7 +77,6 @@
                            move input-char(c) to num-char
                            compute operands(i) = 10 * operands(i) + 
                            num-char
-      *                     function numval(num-char)
                        end-if
                        move input-char(c) to prev-char
                    when any
@@ -91,7 +88,7 @@
            move 2 to i-explore
            move operands(1) to acc
            compute result = result +
-            explore-operators(current-line, i-explore, acc).
+            function explore-operators(current-line, i-explore, acc).
            
        end program Day7.
 
@@ -100,8 +97,11 @@
        local-storage section.
        01 add-res pic 9(20).
        01 mul-res  pic 9(20).
+       01 concat-res pic 9(20).
+       01 concat-temp pic 9(20).
        01 explore-add pic 9(20).
        01 explore-mul pic 9(20).
+       01 explore-concat pic 9(20).
        01 operand pic 9(20).
        01 i-next pic 9(9).
        linkage section.
@@ -124,8 +124,10 @@
                explore-operators(current-line, i-next, add-res)
                compute explore-mul = 
                explore-operators(current-line, i-next, mul-res)
-                              
-               if goal = explore-add or explore-mul
+               
+               perform part-two
+
+               if goal = explore-add or explore-mul or explore-concat                    
                    move goal to ret
                else
                    move zero to ret
@@ -134,5 +136,14 @@
                move acc to ret
            end-if
            goback.
+           part-two.
+               move acc to concat-res
+               move operand to concat-temp
+               perform test after until concat-temp <= 0
+                   compute concat-res = 10 * concat-res
+                   compute concat-temp = concat-temp / 10
+               end-perform
+               compute concat-res = concat-res + operand
+               compute explore-concat =
+               explore-operators(current-line, i-next, concat-res).
        end function explore-operators.
-       
