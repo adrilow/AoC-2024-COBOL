@@ -165,6 +165,6 @@
                    end-if
                end-perform
                display " "
-           end-perform
+           end-perform.
 
        end program Day8.
