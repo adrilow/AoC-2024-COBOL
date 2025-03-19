@@ -20,7 +20,8 @@
       *78 input-width value 12.
        
       
-       01 input-line pic X occurs input-width times.
+       01 filler.
+           05 input-line pic X occurs input-width times.
        
        working-storage section.
        01 ws-eof pic x(1).
